@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="initial-scale=1.0, user-scalable=no, width=device-width"
+    />
+    <title>hello吉林洪涝一张图</title>
+
+    <style>
+        html,
+        body,
+        #container{
+            width: 100%;
+            height: 100%;
+            /* margin: 85px 300px 65px 300px; */
+            margin: 0;
+            padding: 0;
+        }
+
+        .demo-title {
+          position: absolute;
+          top: 32px;
+          left: 25px;
+          z-index: 4;
+        }
+
+        h1 {
+          font-size: 33px;
+          margin: 0;
+          color:aliceblue;
+          position: fixed;
+            top: 9px; 
+            /* position: relative;
+            top: 3px; */
+            width: 100%;
+            height: 85px;
+            text-align: center;
+        }
+
+        #top{
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 75px;
+            /* border: 3px solid #73AD21; */
+            background-image: url('./img/top.png');
+            background-position:center;
+            /* background-size: contain; */
+            z-index: 2;
+        }
+
+        #bottom{
+
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 55px;
+            /* border: 3px solid #ad7321; */
+            background-image: url('./img/bottom.png');
+            background-position:center;
+            z-index: 2;
+        }
+
+        #left{
+            position: fixed;
+            left: 0;
+            top:75px;
+            /* width: 300px; */
+            /* height: 100%; */
+            width: 15vw;
+            height: calc(100vh - 130px);
+            background-image: url('./img/left.png');
+            border: 3px solid #ad218c;
+            z-index: 1;
+        }
+
+        #right{
+            position: fixed;
+            right: 0;
+            top: 75px;
+            /* width: 300px; */
+            width: 15vw;
+            height: calc(100vh - 130px);
+            border: 3px solid #31b6e7;
+            background-image: url('./img/right.png');
+            /* z-index: 1; */
+        }
+
+        #topbac{
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 75px;
+            /* border: 3px solid #73AD21; */
+            background-image: url('./img/namebar.png');
+            background-position:top center;
+            /* background-size: contain; */
+            /* z-index: 3; */
+        }
+
+        #botbac{
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 35px;
+            /* border: 3px solid #73AD21; */
+            background-image: url('./img/image82.png');
+            background-position:top center;
+        }
+
+    </style>
+
+    <script type="text/javascript">
+    window._AMapSecurityConfig = {
+      securityJsCode: '25e86a6e214dd6ef43bddb42e6632422',
+    //   「你申请的安全密钥」25e86a6e214dd6ef43bddb42e6632422
+    };
+    </script>
+    <script src="https://webapi.amap.com/maps?v=2.0&key=21f59cac87f3ec5507341c02d3d5877f"></script>
+    <script src="https://webapi.amap.com/loca?v=2.0.0&key=21f59cac87f3ec5507341c02d3d5877f"></script>
+
+    <script src="./ku/echarts.min.js"></script>
+
+</head>
+<body>
+    <div id="container"></div>
+    
+    
+
+    <div class="demo-title">
+        <h1>吉林省洪涝灾害风险评估一张图</h1>
+    </div>
+
+    
+
+  <Script>
+      console.log(AMap)
+  </Script>
+  <script>
+      var map=new AMap.Map('container',{
+          viewMode: '3D', //默认使用 2D 模式
+          pitch: 45,
+          zoom: 7.5, //地图级别
+          center: [126.844728, 43.44423], //地图中心点
+          mapStyle: "amap://styles/blue", //设置地图的显示样式
+      })
+      //异步加载控件
+      AMap.plugin(['AMap.ToolBar','AMap.ControlBar','AMap.MapType','AMap.HawkEye','AMap.Scale'],function(){ 
+          var toolbar = new AMap.ToolBar({
+              position: {
+                  bottom: '266px',
+                  right: 'calc(15vw + 15px)'
+              }
+          }); //缩放工具条实例化
+          map.addControl(toolbar); //添加控件
+          var controlBar = new AMap.ControlBar({
+              //position:'LB',
+              //offset:AMap.Pixel(1000,1000),
+              position: {
+                  bottom: '216px',
+                  left: 'calc(15vw + 15px)'
+              }
+          });
+          map.addControl(controlBar); //添加控件
+          var mapType = new AMap.MapType({
+              //position:'LB',
+              //offset:AMap.Pixel(1000,1000),
+              position: {
+                  top: '100px',
+                  right: 'calc(15vw + 15px)'
+              }
+          });
+          map.addControl(mapType); //添加控件
+          var hawkEye = new AMap.HawkEye({
+              //position:'LB',
+              //offset:AMap.Pixel(1000,1000),
+              position: {
+                  bottom: '65px',
+                  right: 'calc(15vw + 15px)'
+              },
+              mapStyle: "amap://styles/blue", //设置地图的显示样式
+              //borderRadius:'20px'
+          });
+          map.addControl(hawkEye); //添加鹰眼控件
+          var scale = new AMap.Scale({
+              position: {
+                  bottom: '65px',
+                  right: 'calc(15vw + 195px)'
+              },
+          });
+          map.addControl(scale); //添加控件
+      });
+
+
+      var loca = window.loca = new Loca.Container({
+        map,
+      });
+
+      loca.ambLight = {
+        intensity: 0.3,
+        color: '#fff',
+      };
+      loca.dirLight = {
+        intensity: 0.6,
+        color: '#fff',
+        target: [0, 0, 0],
+        position: [0, -1, 1],
+      };
+      loca.pointLight = {
+        color: 'rgb(100,100,100)',
+        position: [120.24289, 30.341335, 20000],
+        intensity: 3,
+        // 距离表示从光源到光照强度为 0 的位置，0 就是光不会消失。
+        distance: 50000,
+      };
+
+      var geo = new Loca.GeoJSONSource({
+        //url:'./data/outputok3.geojson',
+        url:'./data/jilin_county5.geojson',
+        //url:'https://a.amap.com/Loca/static/loca-v2/demos/mock_data/hz_gn.json',
+    });
+
+    //var colors = ['#00AF53', '#00873A', '#006B31', '#004835', '#003829'].reverse();
+    var colors = [ '#FF0000', '#FF8000', '#FFFF00', '#8BD100','#38A800'].reverse();
+    var height = [40000, 80000, 120000, 160000, 200000];
+    var pl = new Loca.PolygonLayer({
+        // loca,
+        zIndex: 120,
+        opacity: 0.8,
+        // cullface: 'none',
+        shininess: 10,
+        hasSide: true,
+    });
+
+    pl.setSource(geo);
+    pl.setStyle({
+        topColor: function (index, feature) {
+            var v = feature.properties.Comprehensive;
+            return v == 5 ? colors[4] :
+                v == 4 ? colors[3] :
+                    v == 3 ? colors[2] :
+                        v == 2 ? colors[1] :
+                            v == 1 ? colors[0] : 'green';
+        },
+        sideTopColor: function (index, feature) {
+            // var v = feature.properties.value;
+            var v = feature.properties.Comprehensive;
+            return v == 5 ? colors[4] :
+                v == 4 ? colors[3] :
+                    v == 3 ? colors[2] :
+                        v == 2 ? colors[1] :
+                            v == 1 ? colors[0] : 'green';
+        },
+        sideBottomColor: function (index, feature) {
+            // var v = feature.properties.value;
+            var v = feature.properties.Comprehensive;
+            return v == 5 ? colors[4] :
+                v == 4 ? colors[3] :
+                    v == 3 ? colors[2] :
+                        v == 2 ? colors[1] :
+                            v == 1 ? colors[0] : 'green';
+        },
+        height: function (index, feature) {
+            var v = feature.properties.Comprehensive;
+            return v == 5 ? height[4] :
+                v == 4 ? height[3] :
+                    v == 3 ? height[2] :
+                        v == 2 ? height[1] :
+                            v == 1 ? height[0] : 0;
+        },
+        altitude: 0,
+    });
+
+    loca.add(pl);
+
+    // 图例
+    var lengend = new Loca.Legend({
+        loca: loca,
+        title: {
+            label: '危险性指标',
+            fontColor: '#eee',
+        },
+        style: {
+            backgroundColor: 'rgb(150,150,150)',
+            left: 'calc(15vw + 15px)',
+            bottom: '60px',
+        },
+        dataMap: [
+            { label: "低危险性", color: colors[0] },
+            { label: "次低危险性", color: colors[1] },
+            { label: "中危险性", color: colors[2] },
+            { label: "次高危险性", color: colors[3] },
+            { label: "高危险性", color: colors[4] },
+        ].reverse(),
+    });
+
+    // 生长动画
+    map.on('click', function () {
+      pl.addAnimate({
+        key: 'height',
+        value: [0, 1],
+        duration: 1000,
+        easing: 'CubicInOut',
+      }, function () {
+        // console.log(123);
+      });
+    });
+
+    // 创建纯文本标记
+    var text = new AMap.Text({
+      text: '纯文本标记',
+      anchor: 'center', // 设置文本标记锚点
+      draggable: true,
+      cursor: 'pointer',
+      angle: 0,
+      visible: false,
+      offset: [0, -25],
+      style: {
+        'padding': '5px 10px',
+        'margin-bottom': '1rem',
+        'border-radius': '.25rem',
+        'background-color': 'rgba(0,0,0,0.5)',
+        // 'width': '12rem',
+        'border-width': 0,
+        'box-shadow': '0 2px 6px 0 rgba(255, 255, 255, .3)',
+        'text-align': 'left',
+        'font-size': '16px',
+        'color': '#fff',
+      },
+    });
+    text.setMap(map);
+
+    // 拾取
+    map.on('mousemove', (e) => {
+      var feat = pl.queryFeature(e.pixel.toArray());
+      //console.log(feat.properties.NAME)
+
+      if (feat) {
+        text.show();
+        //var health = feat.properties.health;
+        var com = feat.properties.Comprehensive;
+        var dang = feat.properties.Danger;
+        var sens = feat.properties.sensitivity;
+        var bro = feat.properties.broke;
+        var fixless = feat.properties.fix;
+        var cword;
+        var dword;
+        var sword;
+        var bword;
+        var fword;
+        if(com==1)
+          cword="低风险";
+        else if(com==2)
+          cword="次低风险";
+        else if(com==3)
+          cword="中风险";
+        else if(com==4)
+          cword="次高风险";
+        else if(com==5)
+          cword="高风险";
+        if(dang==1)
+          dword="低危险性";
+        else if(dang==2)
+          dword="次低危险性";
+        else if(dang==3)
+          dword="中危险性";
+        else if(dang==4)
+          dword="次高危险性";
+        else if(dang==5)
+          dword="高危险性";
+        if(sens==1)
+          sword="低敏感性";
+        else if(sens==2)
+          sword="次低敏感性";
+        else if(sens==3)
+          sword="中敏感性";
+        else if(sens==4)
+          sword="次高敏感性";
+        else if(sens==5)
+          sword="高敏感性";
+        if(bro==1)
+          bword="低易损性";
+        else if(bro==2)
+          bword="次低易损性";
+        else if(bro==3)
+          bword="中易损性";
+        else if(bro==4)
+          bword="次高易损性";
+        else if(bro==5)
+          bword="高易损性";
+        if(fixless==1)
+          fword="低防灾减灾能力";
+        else if(fixless==2)
+          fword="次低防灾减灾能力";
+        else if(fixless==3)
+          fword="中防灾减灾能力";
+        else if(fixless==4)
+          fword="次高防灾减灾能力";
+        else if(fixless==5)
+          fword="高防灾减灾能力";
+        text.setText(feat.properties.NAME +'-'+ feat.properties.CITY+
+          '<br>风险等级：' + cword+
+          '<br>危险性：'+dword  +
+          '<br>敏感性：'+sword+
+          '<br>易损性：'+bword+
+          '<br>防灾减灾能力：'+fword,
+        );
+        text.setPosition(e.lnglat);
+
+        pl.setStyle({
+          topColor: (index, feature) => {
+            if (feature === feat) {
+              return [255, 255, 255, 0.5];
+            }
+            var v = feature.properties.Comprehensive;
+            return v == 5 ? colors[4] :
+                v == 4 ? colors[3] :
+                    v == 3 ? colors[2] :
+                        v == 2 ? colors[1] :
+                            v == 1 ? colors[0] : 'green';
+          },
+          sideTopColor: (index, feature) => {
+            if (feature === feat) {
+              return [255, 255, 255, 0.5];
+            }
+            //var v = feature.properties.health * 100;
+            var v = feature.properties.Comprehensive;
+            return v == 5 ? colors[4] :
+                v == 4 ? colors[3] :
+                    v == 3 ? colors[2] :
+                        v == 2 ? colors[1] :
+                            v == 1 ? colors[0] : 'green';
+          },
+          sideBottomColor: (index, feature) => {
+            if (feature === feat) {
+              return [255, 255, 255, 0.5];
+            }
+            var v = feature.properties.Comprehensive;
+            return v == 5 ? colors[4] :
+                v == 4 ? colors[3] :
+                    v == 3 ? colors[2] :
+                        v == 2 ? colors[1] :
+                            v == 1 ? colors[0] : 'green';
+          },
+          height: function (index, feature) {
+            var v = feature.properties.Comprehensive;
+            return v == 5 ? height[4] :
+                v == 4 ? height[3] :
+                    v == 3 ? height[2] :
+                        v == 2 ? height[1] :
+                            v == 1 ? height[0] : 0;
+          },
+        });
+
+        // 基于准备好的dom，初始化echarts实例
+        var myChart14 = echarts.init(document.getElementById('right1'));
+
+        var option14 = {
+            title: {
+              text: '各项二级指标数据',
+              textStyle:{
+                  color:"azure",
+              }
+              
+            },
+            tooltip: {
+                show : true,
+                trigger:'item',
+                enterable:true,
+            },
+            legend: {
+              data: ['销量']
+            },
+            xAxis: {
+              type: 'value',
+              axisLine:{
+                  show:false,
+              },
+              splitLine:{
+                  show:true,
+              }
+              // data: ['危险性', '敏感性', '易损性', '防灾灭灾能力'],
+              // axisLabel:{
+              //     rotate:45,
+              // }
+            },
+            yAxis: {
+              type:'category',
+              data: ['年均暴雨天数', '年均雨季降水量', '历史暴雨频次', 
+                '相对高程', '植被覆盖度FVC', '土壤可蚀性', '河网密度', '绝对高程', 
+                '人口密度', '地均GDP', '土地利用类型', 
+                '地区生产总值', '人均可支配收入', '万人均床位'],
+              
+            },
+            series: [
+              {
+                name: '销量1',
+                type: 'bar',
+                data: [feat.properties.yearday, feat.properties.yearrain, feat.properties.hisrain, 
+                  feat.properties.high, feat.properties.FVC/100, feat.properties.SOIL, feat.properties.RIVER, feat.properties.superhigh/10, 
+                  feat.properties.Population, feat.properties.PerGDP, feat.properties.landuse, 
+                  feat.properties.GDP/10000, feat.properties.peoplemoney/1000, feat.properties.peobed],
+                showBackground:true,
+                itemStyle:{
+                  color:'rgb(69, 197, 199)',
+                },
+                emphasis:{
+                  itemStyle:{
+                      color:'white'
+                  }
+                },
+                label:{
+                  show:true,
+                  position:"right",
+                  rotate:45,
+                  formatter: '{c}'
+                },
+              },
+              
+            ]
+          };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart14.setOption(option14);
+
+        // 基于准备好的dom，初始化echarts实例
+        var myChart44 = echarts.init(document.getElementById('leftbottom'));
+
+        // 指定图表的配置项和数据
+        var option44 = {
+          title: {
+            text: 'ECharts学习',
+            textStyle:{
+                color:"azure",
+            }
+            
+          },
+          tooltip: {
+              show : true,
+              trigger:'item',
+              enterable:true,
+          },
+          legend: {
+            data: ['销量']
+          },
+          radar: {
+            indicator: [
+                { name: '危险性', max: 5 },
+                { name: '敏感性', max: 5 },
+                { name: '易损性', max: 5 },
+                { name: '灭灾减灾能力', max: 5 }
+            ],
+            // splitArea: {
+            //     areaStyle: {
+            //     color: ['#77EADF', '#26C3BE', '#64AFE9', '#428BD4'],
+            //     shadowColor: 'rgba(0, 0, 0, 0.2)',
+            //     shadowBlur: 10
+            //     }
+            // },
+            axisLine: {
+                lineStyle: {
+                color: 'rgba(211, 253, 250, 0.8)'
+                }
+            },
+            splitLine: {
+                lineStyle: {
+                color: 'rgba(211, 253, 250, 0.8)'
+                }
+            }
+          },
+          series: [
+            {
+                name: 'Budget vs spending',
+                type: 'radar',
+                data: [
+                    {
+                    value: [dang, sens, bro, fixless],
+                    name: feat.properties.NAME +'各项指标结果',
+                    lineStyle: {
+                        //type: 'dashed'
+                    },
+                    areaStyle: {
+                        color: 'rgba(255, 228, 52, 0.6)'
+                    }
+                    },
+                ],
+                itemStyle:{
+                color:'yellow',
+                },
+                emphasis:{
+                    itemStyle:{
+                        color:'red'
+                    }
+                }
+                
+            },
+            
+          ]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart44.setOption(option44);
+
+
+      } 
+      else {
+        text.hide();
+      }
+    }
+  );
+
+  //feat.properties.yearday, feat.properties.yearrain, feat.properties.hisrain, 
+  //feat.properties.high, feat.properties.FVC, feat.properties.SOIL, feat.properties.RIVER, feat.properties.superhigh, 
+  //feat.properties.Population, feat.properties.PerGDP, feat.properties.landuse, 
+  //feat.properties.GDP, feat.properties.peoplemoney, feat.properties.peobed
+  var comclick;
+  var dangclick;
+  var sensclick;
+  var broclick;
+  var fixlessclick;
+  var cword;
+  var dword;
+  var sword;
+  var bword;
+  var fword;
+  var yeardayclick;
+  var yearrainclick;
+  var hisrainclick;
+  var highclick;
+  var superhighclick;
+  var fvcclick;
+  var soilclick;
+  var riverclick;
+  var popclick;
+  var pergdpclick;
+  var lulcclick;
+  var gdpclick;
+  var peomoneyclick;
+  var peobedclick;
+  
+  map.on('click', (e) =>{
+      var feat1 = pl.queryFeature(e.pixel.toArray());
+      console.log(feat1.properties.NAME)
+
+      /*if (feat1){
+        comclick=feat1.properties.Comprehensive;
+        dangclick=feat1.properties.Danger;
+        sensclick=feat1.properties.sensitivity;
+        broclick=feat1.properties.broke;
+        fixlessclick=feat1.properties.fixless;
+        yeardayclick=feat1.properties.yearday;
+        yearrainclick=feat1.properties.yearrain;
+        hisrainclick=feat1.properties.hisrain;
+        highclick=feat1.properties.high;
+        superhighclick=feat1.properties.superhigh;
+        fvcclick=feat1.properties.FVC;
+        soilclick=feat1.properties.SOIL;
+        riveclickr=feat1.properties.RIVER;
+        popclick=feat1.properties.Population;
+        pergdpclick=feat1.properties.PerGDP;
+        lulcclick=feat1.properties.landuse;
+        gdpclick=feat1.properties.GDP;
+        peomoneyclick=feat1.properties.peoplemoney;
+        peobedclick=feat1.properties.peobed;
+        
+        if(com==1)
+          cword="低风险";
+        else if(com==2)
+          cword="次低风险";
+        else if(com==3)
+          cword="中风险";
+        else if(com==4)
+          cword="次高风险";
+        else if(com==5)
+          cword="高风险";
+        if(dang==1)
+          dword="低危险性";
+        else if(dang==2)
+          dword="次低危险性";
+        else if(dang==3)
+          dword="中危险性";
+        else if(dang==4)
+          dword="次高危险性";
+        else if(dang==5)
+          dword="高危险性";
+        if(sens==1)
+          sword="低敏感性";
+        else if(sens==2)
+          sword="次低敏感性";
+        else if(sens==3)
+          sword="中敏感性";
+        else if(sens==4)
+          sword="次高敏感性";
+        else if(sens==5)
+          sword="高敏感性";
+        if(bro==1)
+          bword="低易损性";
+        else if(bro==2)
+          bword="次低易损性";
+        else if(bro==3)
+          bword="中易损性";
+        else if(bro==4)
+          bword="次高易损性";
+        else if(bro==5)
+          bword="高易损性";
+        if(fixless==1)
+          fword="低防灾减灾能力";
+        else if(fixless==2)
+          fword="次低防灾减灾能力";
+        else if(fixless==3)
+          fword="中防灾减灾能力";
+        else if(fixless==4)
+          fword="次高防灾减灾能力";
+        else if(fixless==5)
+          fword="高防灾减灾能力";
+        
+          
+        //var com = feat.properties.Comprehensive;
+        //<script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart14 = echarts.init(document.getElementById('right1'));
+
+        var option14 = {
+            title: {
+              text: '各项二级指标数据',
+              textStyle:{
+                  color:"azure",
+              }
+              
+            },
+            tooltip: {
+                show : true,
+                trigger:'item',
+                enterable:true,
+            },
+            legend: {
+              data: ['销量']
+            },
+            xAxis: {
+              type: 'value',
+              axisLine:{
+                  show:false,
+              },
+              splitLine:{
+                  show:true,
+              }
+              // data: ['危险性', '敏感性', '易损性', '防灾灭灾能力'],
+              // axisLabel:{
+              //     rotate:45,
+              // }
+            },
+            yAxis: {
+              type:'category',
+              data: ['年均暴雨天数', '年均雨季降水量', '历史暴雨频次', 
+                '相对高程', '植被覆盖度FVC', '土壤可蚀性', '河网密度', '绝对高程', 
+                '人口密度', '地均GDP', '土地利用类型', 
+                '地区生产总值', '人均可支配收入', '万人均床位'],
+              
+            },
+            series: [
+              {
+                name: '销量1',
+                type: 'bar',
+                data: [feat.properties.yearday, feat.properties.yearrain, feat.properties.hisrain, 
+                  feat.properties.high, feat.properties.FVC, feat.properties.SOIL, feat.properties.RIVER, feat.properties.superhigh, 
+                  feat.properties.Population, feat.properties.PerGDP, feat.properties.landuse, 
+                  feat.properties.GDP, feat.properties.peoplemoney, feat.properties.peobed],
+                showBackground:true,
+                itemStyle:{
+                  color:'blue',
+                },
+                emphasis:{
+                  itemStyle:{
+                      color:'white'
+                  }
+                },
+                label:{
+                  show:true,
+                  position:"right",
+                  rotate:45,
+                  formatter: '{c}'
+                },
+              },
+              
+            ]
+          };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart14.setOption(option14);
+
+      }
+      else {
+        
+      }*/
+
+    }
+  );
+
+
+
+
+
+    
+
+  </script>
+
+  
+
+
+  <div id="left">
+    <div style="width: 300px;height: 35px;background-image: url('./img/image85.png');background-size: contain;">
+      <h3 style="color: azur e;">柱状图</h3>
+    </div>
+
+    <div id="leftbottom" style="width: 250px;
+    height: 250px;"></div>
+    <script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart2 = echarts.init(document.getElementById('leftbottom'));
+
+    // 指定图表的配置项和数据
+    var option3 = {
+      title: {
+        text: 'ECharts学习',
+        textStyle:{
+            color:"azure",
+        }
+        
+      },
+      tooltip: {
+          show : true,
+          trigger:'item',
+          enterable:true,
+      },
+      legend: {
+        data: ['销量']
+      },
+      radar: {
+        indicator: [
+            { name: '危险性', max: 5 },
+            { name: '敏感性', max: 5 },
+            { name: '易损性', max: 5 },
+            { name: '灭灾减灾能力', max: 5 }
+        ],
+        // splitArea: {
+        //     areaStyle: {
+        //     color: ['#77EADF', '#26C3BE', '#64AFE9', '#428BD4'],
+        //     shadowColor: 'rgba(0, 0, 0, 0.2)',
+        //     shadowBlur: 10
+        //     }
+        // },
+        axisLine: {
+            lineStyle: {
+            color: 'rgba(211, 253, 250, 0.8)'
+            }
+        },
+        splitLine: {
+            lineStyle: {
+            color: 'rgba(211, 253, 250, 0.8)'
+            }
+        }
+      },
+      series: [
+        {
+            name: 'Budget vs spending',
+            type: 'radar',
+            data: [
+                {
+                value: [4, 3, 2, 3],
+                name: 'xxxxxx',
+                lineStyle: {
+                    //type: 'dashed'
+                },
+                areaStyle: {
+                    color: 'rgba(255, 228, 52, 0.6)'
+                }
+                },
+            ],
+            itemStyle:{
+            color:'yellow',
+            },
+            emphasis:{
+                itemStyle:{
+                    color:'red'
+                }
+            }
+            
+        },
+        
+      ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChart2.setOption(option3);
+    </script>
+
+    <div id="lefttable" style="width: 300px;
+    height: 230px;"></div>
+    <script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart1 = echarts.init(document.getElementById('lefttable'));
+
+    // 指定图表的配置项和数据
+    var option2 = {
+      title: {
+        text: 'ECharts学习',
+        textStyle:{
+            color:"azure",
+        }
+        
+      },
+      tooltip: {
+          show : true,
+          trigger:'item',
+          enterable:true,
+      },
+      legend: {
+        data: ['销量']
+      },
+      xAxis: {
+        type:'category',
+        data: ['危险性', '敏感性', '易损性', '防灾灭灾能力'],
+        axisLabel:{
+            rotate:45,
+        }
+      },
+      yAxis: {
+        //type:'value',
+        data: ['0','低', '次低', '中', '次高','高'],
+        axisLine:{
+            show:false,
+        },
+        splitLine:{
+            show:true,
+        }
+      },
+      series: [
+        {
+          name: '销量1',
+          type: 'bar',
+          data: ['低', '高', '中', '次高'],
+          showBackground:true,
+          itemStyle:{
+            color:'red',
+          },
+          emphasis:{
+            itemStyle:{
+                color:'yellow'
+            }
+          },
+          label:{
+            show:true,
+            position:"top",
+            rotate:45,
+            formatter: '{c}{b}'
+          },
+        },
+        
+      ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChart1.setOption(option2);
+    </script>
+
+    <div id="mainleft1" style="width: 300px;height:280px;"></div>
+    <script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('mainleft1'));
+
+    // 指定图表的配置项和数据
+    var option1 = {
+      title: {
+        text: 'ECharts 入门示例',
+        textStyle:{
+            color:"azure",
+        }
+        
+      },
+      tooltip: {
+          show : true,
+          trigger:'item',
+          enterable:true,
+          formatter: '{b}的销量为{c}'
+      },
+      legend: {
+        data: ['销量']
+      },
+      xAxis: {
+        data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
+      },
+      yAxis: {},
+      series: [
+        {
+          name: '销量1',
+          type: 'bar',
+          data: [5, 20, 36, 10, 10, 20],
+          showBackground:true,
+          itemStyle:{
+            color:'pink',
+          },
+          emphasis:{
+            itemStyle:{
+                color:'yellow'
+            }
+          },
+          label:{
+            show:true,
+            position:"top",
+            rotate:45,
+          },
+        },
+        {
+          name: '销量2',
+          type: 'bar',
+          data: [15, 20, 26, 15, 20, 20],
+          showBackground:true,
+          itemStyle:{
+            color:'green',
+          },
+        }
+      ]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option1);
+    </script>
+
+    
+  </div>
+
+
+  <div id="right">
+
+      <div id="right2" style="width: 300px;
+      height: 300px;" ></div>
+      <script type="text/javascript">
+          // 基于准备好的dom，初始化echarts实例
+          var myChart4 = echarts.init(document.getElementById('right2'));
+    
+          // 指定图表的配置项和数据
+          var option4 = {
+            tooltip: {
+                trigger: 'item',
+                //formatter: '{a} <br/>{@idvalue}: {c}',
+                formatter: '{a} <br/>{b}: {c}'
+              },
+              legend: {
+                show: false
+              },
+              series: [
+                {
+                  name: '一级指标权重',
+                  //type: 'pie',
+                  type:'sunburst',
+                  selectedMode: 'single',
+                  radius: ['20%', '80%'],
+                  label: {
+                    position: 'inner',
+                    fontSize: 14,
+                    color:'rgb(255, 255, 255)'
+                  },
+                  labelLine: {
+                    show: false
+                  },
+                  itemStyle: {
+                    borderRadius:4,
+                    //borderColor: '#fff',
+                    //borderWidth: 1,
+                    
+                  },
+                  data: [
+                    { 
+                      //value: 0.304, 
+                      name: '危险性',
+                      itemStyle:{color:'rgb(91, 155, 213)'},
+                      children:[
+                        { value: 0.098192, name: '暴雨天数',itemStyle:{color:'rgb(222, 235, 246)'},'idvalue': 0.323 },
+                        { value: 0.116432, name: '雨季降水量' ,itemStyle:{color:'rgb(189, 215, 238)'},'idvalue': 0.383 },
+                        { value: 0.089376, name: '暴雨频次' ,itemStyle:{color:'rgb(156, 195, 229)'},'idvalue': 0.294 },
+                      ]                  
+                    },
+                    { 
+                      //value: 0.348, 
+                      name: '敏感性',
+                      itemStyle:{color:'rgb(255, 192, 0)'},  
+                      children:[
+                        { value: 0.078996, name: '相对高程',itemStyle:{color:'rgb(255, 242, 204)'},'idvalue': 0.227  },
+                        { value: 0.075516, name: 'FCV' ,itemStyle:{color:'rgb(254, 229, 153)'},'idvalue': 0.217 },
+                        { value: 0.035844, name: '土壤可蚀性',itemStyle:{color:'rgb(255, 217, 101)'},'idvalue':  0.103  },
+                        { value: 0.07482, name: '河网密度',itemStyle:{color:'rgb(191, 144, 0)'},'idvalue': 0.215  },
+                        { value: 0.082824, name: '绝对高程' ,itemStyle:{color:'rgb(127, 96, 0)'},'idvalue': 0.238 },
+                      ]
+                    },
+                    { 
+                      //value: 0.211, 
+                      name: '易损性',
+                      itemStyle:{color:'rgb(112, 173, 71)'},
+                      children:[
+                        { value: 0.094528, name: '人口密度' ,itemStyle:{color:'rgb(226, 239, 217)'},'idvalue': 0.448 },
+                        { value: 0.063089, name: '地均GDP',itemStyle:{color:'rgb(197, 224, 179)'},'idvalue': 0.299  },
+                        { value: 0.053383, name: '土地利用类型',itemStyle:{color:'rgb(168, 208, 141)'},'idvalue': 0.253  },
+                      ]
+                    },
+                    { 
+                      //value: 0.137, 
+                      name: '防灾减灾能力',
+                      itemStyle:{color:'rgb(237, 125, 49)'},
+                      children:[
+                        { value: 0.061239, name: '地区生产总值',itemStyle:{color:'rgb(251, 229, 213)'},'idvalue': 0.447  },
+                        { value: 0.021509, name: '人均可支配收入',itemStyle:{color:'rgb(247, 203, 172)'},'idvalue': 0.157  },
+                        { value:  0.054252, name: '万人均床位',itemStyle:{color:'rgb(244, 177, 131)'},'idvalue':  0.396  }
+                      ]
+                    }
+                  ]
+                },
+                /*{
+                  name: '二级指标权重',
+                  type: 'pie',
+                  radius: ['35%', '58%'],
+                  
+                  label: {
+                    show: false,
+                    position: 'center'
+                  },
+                  emphasis: {
+                    label: {
+                        show: true,
+                        fontSize: 24,
+                        fontWeight: 'bold',
+                        formatter:'{b}\n{c}'
+                        },
+                        focus: 'series',
+                        blurScope: 'coordinateSystem'
+                  },
+                  itemStyle: {
+                    borderRadius: 2,
+                    //borderColor: '#fff',
+                    borderWidth: 1
+                  },
+                  
+                  data: [
+                    { value: 0.304, name: '危险性' },
+                    { value: 0.348, name: '敏感性' },
+                    { value: 0.211, name: '易损性' },
+                    { value: 0.137, name: '防灾减灾能力' }
+                  ]
+                }*/
+              ]
+          };
+          // 使用刚指定的配置项和数据显示图表。
+          myChart4.setOption(option4);
+      </script>
+      
+      <div id="right1" style="width: 300px;
+      height: 500px;"></div>
+      <script type="text/javascript">
+          // 基于准备好的dom，初始化echarts实例
+          var myChart3 = echarts.init(document.getElementById('right1'));
+          yearrainclick=3000;
+    
+          // 指定图表的配置项和数据
+          var option5 = {
+            title: {
+              text: 'ECharts学习',
+              textStyle:{
+                  color:"azure",
+              }
+              
+            },
+            tooltip: {
+               show : true,
+               trigger:'item',
+               enterable:true,
+            },
+            legend: {
+              data: ['销量']
+            },
+            xAxis: {
+              type: 'value',
+              axisLine:{
+                  show:false,
+              },
+              splitLine:{
+                  show:true,
+              }
+              // data: ['危险性', '敏感性', '易损性', '防灾灭灾能力'],
+              // axisLabel:{
+              //     rotate:45,
+              // }
+            },
+            yAxis: {
+              type:'category',
+              data: ['年均暴雨天数', '年均雨季降水量', '历史暴雨频次', 
+                '相对高程', '植被覆盖度FVC', '土壤可蚀性', '河网密度', '绝对高程', 
+                '人口密度', '地均GDP', '土地利用类型', 
+                '地区生产总值', '人均可支配收入', '万人均床位'],
+            },
+            series: [
+              {
+                name: '销量1',
+                type: 'bar',
+                data: [10000, 20000, 30000, 40000, 20000, 30000, 40000, 20000, 30000, 40000, 20000, 30000, 40000, 20000],
+                
+                /*data: [10000, yearrainclick, hisrainclick, 
+                  highclick, fvcclick, soilclick, riverclick, superhighclick, 
+                  popclick, pergdpclick, lulcclick, 
+                  gdpclick, peomoneyclick, peobedclick],*/
+                showBackground:true,
+                itemStyle:{
+                  color:'rgb(69, 197, 199)',
+                },
+                emphasis:{
+                  itemStyle:{
+                      color:'white'
+                  }
+                },
+                label:{
+                  show:true,
+                  position:"right",
+                  rotate:45,
+                  formatter: '{c}'
+                },
+              },
+              
+            ]
+          };
+          // 使用刚指定的配置项和数据显示图表。
+          myChart3.setOption(option5);
+      </script>
+
+
+
+
+  </div>
+
+  <div id="top"></div>
+  <div id="bottom"></div>
+  <div id="topbac"></div>
+  <div id="botbac"></div>
+
+
+</body>
+</html>
